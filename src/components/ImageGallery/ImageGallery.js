@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import ImageGalleryItem from '../ImageGalleryItem';
 
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, onImageClickChooseId, onImageClickOpenModal }) => {
 
   return (
     <List>
-    <ImageGalleryItem images={images}/>
+    <ImageGalleryItem images={images} onImageClickChooseId={onImageClickChooseId} onImageClickOpenModal={onImageClickOpenModal}/>
   </List>
   )
 
@@ -25,4 +25,6 @@ ImageGallery.prototype = {
             description: PropTypes.string.isRequired,
         })
     ),
+    onImageClickChooseId: PropTypes.func,
+    onImageClickOpenModal: PropTypes.func,
 };

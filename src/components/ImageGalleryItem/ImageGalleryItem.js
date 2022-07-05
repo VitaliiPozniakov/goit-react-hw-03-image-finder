@@ -3,13 +3,21 @@ import {GalleryItem, Image} from './ImageGalleryItem.styled'
 // import PropTypes from 'prop-types';
 
 
-const ImageGalleryItem = ({ images }) => {
+
+
+const ImageGalleryItem = ({ images, onImageClickChooseId, onImageClickOpenModal }) => {
+
+    const handleImageClick = (idOfChooseImg) => {
+        onImageClickChooseId(idOfChooseImg)
+        onImageClickOpenModal()
+
+    }
 
   return (
       <>
       {images.map(({id, littleImageUrl, description}) => (
         <GalleryItem key={id}>
-        <Image src = {littleImageUrl} alt={description} />
+        <Image src = {littleImageUrl} alt={description} onClick={() => handleImageClick(id)}/>
       </GalleryItem>
       ))}
       </>

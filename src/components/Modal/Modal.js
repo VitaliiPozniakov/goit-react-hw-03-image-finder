@@ -1,32 +1,41 @@
-import React from 'react';
-import {Overlay, Mod} from './Modal.styled'
+import { Component } from 'react';
+import { createPortal } from 'react-dom';
+import { Overlay, Content } from './Modal.styled';
 // import PropTypes from 'prop-types';
 
+const modalRoot = document.querySelector('#modal-root');
 
-const Modal = ({ images }) => {
+export default class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener(`keydown`, this.handleKeyDown);
+  }
 
-  return (
-      <>l
-      {images.map(({largeImageUrl, description}) => (
-   <Overlay>
-   <Mod class="modal">
-     <img src={largeImageUrl} alt={description} />
-   </Mod>
- </Overlay>
-      ))}
-      </>
-  )
-};
+  componentWillUnmount() {
+    window.removeEventListener(`keydown`, this.handleKeyDown);
+  }
 
-export default Modal;
 
-// Modal.prototype = {
-//     images : PropTypes.arrayOf(
-//         PropTypes.shape({
-//             id: PropTypes.number.isRequired,
-//             littleImageUrl: PropTypes.string.isRequired,
-//             largeImageUrl: PropTypes.string.isRequired,
-//             description: PropTypes.string.isRequired,
-//         })
-//     ),
-// };
+
+  handleKeyDown = e => {
+    if (e.code === 'Escape') {
+    //   console.log('нажали єскейп');
+      this.props.onClose();
+    }
+  };
+
+  handleBackdropClick = e => {
+    if (e.currentTarget === e.target) {
+    //   console.log('нажали backdrop');
+      this.props.onClose();
+    }
+  }; 
+
+  render() {
+    return createPortal(
+      <Overlay onClick={this.handleBackdropClick}>
+        <Content>{this.props.children}</Content>
+      </Overlay>,
+      modalRoot
+    );
+  }
+}
