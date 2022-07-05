@@ -1,30 +1,32 @@
 import React from 'react';
 import {Overlay, Mod} from './Modal.styled'
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 
 const Modal = ({ images }) => {
 
   return (
-      <>
-      {images.map(({id, littleImageUrl, description}) => (
-        <GalleryItem key={id}>
-        <Image src = {littleImageUrl} alt={description} />
-      </GalleryItem>
+      <>l
+      {images.map(({largeImageUrl, description}) => (
+   <Overlay>
+   <Mod class="modal">
+     <img src={largeImageUrl} alt={description} />
+   </Mod>
+ </Overlay>
       ))}
       </>
   )
 };
 
-export default ImageGalleryItem;
+export default Modal;
 
-ImageGalleryItem.prototype = {
-    images : PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            littleImageUrl: PropTypes.string.isRequired,
-            largeImageUrl: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-        })
-    ),
-};
+// Modal.prototype = {
+//     images : PropTypes.arrayOf(
+//         PropTypes.shape({
+//             id: PropTypes.number.isRequired,
+//             littleImageUrl: PropTypes.string.isRequired,
+//             largeImageUrl: PropTypes.string.isRequired,
+//             description: PropTypes.string.isRequired,
+//         })
+//     ),
+// };
