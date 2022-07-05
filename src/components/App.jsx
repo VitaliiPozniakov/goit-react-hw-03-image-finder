@@ -2,6 +2,8 @@ import { Component } from 'react';
 import Searchbar from './Searchbar';
 import { fetchImages } from 'services/api';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ImageGallery from './ImageGallery';
 
 export default class App extends Component {
   state = {
@@ -20,12 +22,13 @@ export default class App extends Component {
         this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
 
         const dataFromBackend = await fetchImages(query);
-        // console.log(dataFromBackend.hits)
+        console.log(dataFromBackend.hits)
         const { hits } = dataFromBackend;
         const imagesArray = hits.map(hit => ({
           id: hit.id,
           littleImageUrl: hit.webformatURL,
           largeImageUrl: hit.largeImageURL,
+          description: hit.tags,
         }));
         // console.log(imagesArray)
         return this.setState(({ isLoading}) => ({
@@ -44,6 +47,7 @@ export default class App extends Component {
           id: hit.id,
           littleImageUrl: hit.webformatURL,
           largeImageUrl: hit.largeImageURL,
+          description: hit.tags,
         }));
         // console.log(imagesArray)
         return this.setState(({ isLoading, images }) => ({
@@ -68,6 +72,7 @@ export default class App extends Component {
     return (
       <div>
         <Searchbar onSubmitProp={this.getSearchRequest} />
+{this.state.images && <ImageGallery images={this.state.images}/>}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );

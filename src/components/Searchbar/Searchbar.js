@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { ImSearch } from "react-icons/im";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 const schema = yup.object().shape({
   query: yup.string().max(32).trim().matches(),
