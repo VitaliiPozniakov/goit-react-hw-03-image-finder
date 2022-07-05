@@ -1,30 +1,18 @@
 import React from 'react';
-import {} from './Loader.styled'
-// import PropTypes from 'prop-types';
+import { Spinner } from './Loader.styled';
 
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+// import { Circles } from  'react-loader-spinner'
 
-
-const Loader = ({  }) => {
-
+const Loader = () => {
   return (
-//     <List>
-//     <ImageGalleryItem images={images} onImageClickChooseId={onImageClickChooseId} onImageClickOpenModal={onImageClickOpenModal}/>
-//   </List>
-  )
-
+    /* <>
+<Circles color="#00BFFF" height={80} width={80}/>
+</> */
+    <div role="alert">
+      <Spinner />
+    </div>
+  );
 };
 
 export default Loader;
-
-ImageGaLoaderllery.prototype = {
-    // images : PropTypes.arrayOf(
-    //     PropTypes.shape({
-    //         id: PropTypes.number.isRequired,
-    //         littleImageUrl: PropTypes.string.isRequired,
-    //         largeImageUrl: PropTypes.string.isRequired,
-    //         description: PropTypes.string.isRequired,
-    //     })
-    // ),
-    // onImageClickChooseId: PropTypes.func,
-    // onImageClickOpenModal: PropTypes.func,
-};

@@ -37,7 +37,7 @@ const Searchbar = ({ onSubmitProp }) => {
       <Form className={css.searchform}>
       <button type="submit" className={css.searchformButton}>
       {/* <span className={css.searchformButtonLabel}>Search</span> */}
-      <ImSearch style={{ color: '3f51b5'}}/>
+      <ImSearch style={{ color: '#3f51b5'}}/>
     </button>
    
           <Field type="text" name="query" autoComplete="off"

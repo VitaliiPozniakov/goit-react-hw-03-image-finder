@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery';
 import Modal from './Modal';
 import ModalContent from './ModalContent';
+import { BtnLoadMore } from './App.styled';
+import Loader from './Loader';
 
 export default class App extends Component {
   state = {
@@ -16,7 +18,7 @@ export default class App extends Component {
     isLoading: false,
     showModal: false,
     IdOfChooseImage: null,
-    totalImages: null
+    totalImages: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -27,7 +29,7 @@ export default class App extends Component {
         this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
 
         const dataFromBackend = await fetchImages(query);
-        console.log(dataFromBackend);
+        // console.log(dataFromBackend);
         const { hits } = dataFromBackend;
         const imagesArray = hits.map(hit => ({
           id: hit.id,
@@ -39,7 +41,7 @@ export default class App extends Component {
         return this.setState(({ isLoading }) => ({
           isLoading: !isLoading,
           images: imagesArray,
-          totalImages: dataFromBackend.totalHits
+          totalImages: dataFromBackend.totalHits,
         }));
       }
 
@@ -67,47 +69,50 @@ export default class App extends Component {
   }
 
   getSearchRequest = query => {
-    this.setState({ query,   page: 1,
-      images: [],});
-
-
+    this.setState({ query, page: 1, images: [] });
   };
 
   getIdOfChooseImage = IdOfChooseImage => {
     this.setState({ IdOfChooseImage });
-  }
+  };
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({ 
-      showModal: !showModal 
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
     }));
   };
 
-handleBtnLoadMore = () => {
-  console.log('enter loadMore')
+  handleBtnLoadMore = () => {
     this.setState(({ page }) => ({ page: page + 1 }));
   };
 
-
   render() {
-    const {images, showModal, IdOfChooseImage, totalImages} = this.state
-    // const imagesOnPage = images.length
+    const { images, showModal, IdOfChooseImage, totalImages, isLoading } =
+      this.state;
 
     return (
       <div>
-        <Searchbar onSubmitProp={this.getSearchRequest} images={images}/>
-        {images && <ImageGallery images={images} onImageClickChooseId={this.getIdOfChooseImage} onImageClickOpenModal={this.toggleModal}/>}
-
-{images && images.length < totalImages && (<button type='button' onClick={this.handleBtnLoadMore}>Load more</button>)}
-
-
-        {showModal && <Modal onClose={this.toggleModal}>
-        <ModalContent images={images} IdOfChooseImage={IdOfChooseImage}/>
-        </Modal>}
+        <Searchbar onSubmitProp={this.getSearchRequest} />
+        {images && (
+          <ImageGallery
+            images={images}
+            onImageClickChooseId={this.getIdOfChooseImage}
+            onImageClickOpenModal={this.toggleModal}
+          />
+        )}
+        {isLoading && <Loader />}
+        {images && images.length < totalImages && (
+          <BtnLoadMore type="button" onClick={this.handleBtnLoadMore}>
+            Load more
+          </BtnLoadMore>
+        )}
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <ModalContent images={images} IdOfChooseImage={IdOfChooseImage} />
+          </Modal>
+        )}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
 }
-
-
