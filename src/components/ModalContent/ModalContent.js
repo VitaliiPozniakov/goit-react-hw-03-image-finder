@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-const BigImgInModal = ({ images, IdOfChooseImage }) => {
+const ModalContent = ({ images, IdOfChooseImage }) => {
 
     const chooseImage = images.find(image => image.id === IdOfChooseImage)
 // console.log(chooseImage)
@@ -16,9 +16,9 @@ const {largeImageUrl, description} = chooseImage
   )
 };
 
-export default BigImgInModal;
+export default ModalContent;
 
-BigImgInModal.prototype = {
+ModalContent.prototype = {
     images : PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
@@ -27,6 +27,7 @@ BigImgInModal.prototype = {
             description: PropTypes.string.isRequired,
         })
     ),
+    IdOfChooseImage: PropTypes.func,
 };
 
 

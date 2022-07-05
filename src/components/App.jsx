@@ -5,17 +5,18 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery';
 import Modal from './Modal';
-import BigImgInModal from './BigImgInModal';
+import ModalContent from './ModalContent';
 
 export default class App extends Component {
   state = {
     query: '',
     page: 1,
-    images: null,
+    images: [],
     error: null,
     isLoading: false,
     showModal: false,
     IdOfChooseImage: null,
+    totalImages: null
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -26,7 +27,7 @@ export default class App extends Component {
         this.setState(({ isLoading }) => ({ isLoading: !isLoading }));
 
         const dataFromBackend = await fetchImages(query);
-        // console.log(dataFromBackend.hits);
+        console.log(dataFromBackend);
         const { hits } = dataFromBackend;
         const imagesArray = hits.map(hit => ({
           id: hit.id,
@@ -38,6 +39,7 @@ export default class App extends Component {
         return this.setState(({ isLoading }) => ({
           isLoading: !isLoading,
           images: imagesArray,
+          totalImages: dataFromBackend.totalHits
         }));
       }
 
@@ -65,7 +67,10 @@ export default class App extends Component {
   }
 
   getSearchRequest = query => {
-    this.setState({ query });
+    this.setState({ query,   page: 1,
+      images: [],});
+
+
   };
 
   getIdOfChooseImage = IdOfChooseImage => {
@@ -78,17 +83,31 @@ export default class App extends Component {
     }));
   };
 
+handleBtnLoadMore = () => {
+  console.log('enter loadMore')
+    this.setState(({ page }) => ({ page: page + 1 }));
+  };
+
+
   render() {
-    const {images, showModal, IdOfChooseImage} = this.state
+    const {images, showModal, IdOfChooseImage, totalImages} = this.state
+    // const imagesOnPage = images.length
+
     return (
       <div>
-        <Searchbar onSubmitProp={this.getSearchRequest} />
+        <Searchbar onSubmitProp={this.getSearchRequest} images={images}/>
         {images && <ImageGallery images={images} onImageClickChooseId={this.getIdOfChooseImage} onImageClickOpenModal={this.toggleModal}/>}
+
+{images && images.length < totalImages && (<button type='button' onClick={this.handleBtnLoadMore}>Load more</button>)}
+
+
         {showModal && <Modal onClose={this.toggleModal}>
-        <BigImgInModal images={images} IdOfChooseImage={IdOfChooseImage}/>
+        <ModalContent images={images} IdOfChooseImage={IdOfChooseImage}/>
         </Modal>}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
 }
+
+
